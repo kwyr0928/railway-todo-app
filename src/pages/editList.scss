@@ -1,12 +1,19 @@
 @charset "utf-8";
 
+$gray: #555555;
+$red: #ff3333;
+$blue: #242f9b;
+$white: #ffffff;
+$body-width: 80px;
+$body-height: 40px;
+
 .edit-list {
   width: 1000px;
   margin: 0 auto;
 }
 
 .edit-list-form {
-  color: #555555;
+  color: $gray;
 }
 
 .edit-list-title {
@@ -15,22 +22,22 @@
 }
 
 .delete-list-button {
-  color: #ff3333;
-  border: solid 1px #ff3333;
-  width: 80px;
-  height: 40px;
+  color: $red;
+  border: solid 1px $red;
+  width: $body-width;
+  height: $body-height;
   margin: 25px 5px;
   border-radius: 5px;
 }
 
 .edit-list-button {
-  background-color: #242f9b;
-  color: #ffffff;
-  width: 80px;
-  height: 40px;
+  background-color: $blue;
+  color: $white;
+  width: $body-width;
+  height: $body-height;
   border-radius: 5px;
 }
 
 .error-message {
-  color: #ff3333;
+  color: $red;
 }

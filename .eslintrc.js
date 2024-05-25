@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    es2022: true,
   },
   extends: [
     'plugin:react/recommended',
@@ -15,6 +15,8 @@ module.exports = {
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
+        parser: '@typescript-eslint/parser',
+        "ecmaVersion": 13
       },
     },
   ],
