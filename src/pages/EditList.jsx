@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { url } from '../const';
 import './editList.scss';
 
 export const EditList = () => {
@@ -19,7 +18,7 @@ export const EditList = () => {
     };
 
     axios
-      .put(`${url}/lists/${listId}`, data, {
+      .put(`https://railway.todo.techtrain.dev//lists/${listId}`, data, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -34,7 +33,7 @@ export const EditList = () => {
 
   const onDeleteList = () => {
     axios
-      .delete(`${url}/lists/${listId}`, {
+      .delete(`https://railway.todo.techtrain.dev//lists/${listId}`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -49,7 +48,7 @@ export const EditList = () => {
 
   useEffect(() => {
     axios
-      .get(`${url}/lists/${listId}`, {
+      .get(`https://railway.todo.techtrain.dev//lists/${listId}`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },

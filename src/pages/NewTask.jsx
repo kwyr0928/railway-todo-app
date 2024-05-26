@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { url } from '../const';
 import './newTask.scss';
 
 export const NewTask = () => {
@@ -17,15 +16,18 @@ export const NewTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
+  const [limit, setLimit] = useState();
+  const handleLimitChange = (e) => setLimit(e.target.value);
   const onCreateTask = () => {
     const data = {
       title: title,
       detail: detail,
       done: false,
+      limit: limit
     };
 
     axios
-      .post(`${url}/lists/${selectListId}/tasks`, data, {
+      .post(`https://railway.todo.techtrain.dev//lists/${selectListId}/tasks`, data, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -40,7 +42,7 @@ export const NewTask = () => {
 
   useEffect(() => {
     axios
-      .get(`${url}/lists`, {
+      .get(`https://railway.todo.techtrain.dev//lists`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -78,6 +80,10 @@ export const NewTask = () => {
           <label>詳細</label>
           <br />
           <textarea type="text" onChange={handleDetailChange} className="new-task-detail" />
+          <br />
+          <label>期限</label>
+          <br />
+          <textarea type="text" onChange={handleLimitChange} className="new-task-detail" />
           <br />
           <button type="button" className="new-task-button" onClick={onCreateTask}>
             作成

@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { url } from '../const';
 import './home.scss';
-
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState('todo'); // todo->未完了 done->完了
@@ -16,9 +14,22 @@ export const Home = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [cookies] = useCookies();
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
+
+  const calculate = (limit) => {
+    const now = new Date();
+    const end = new Date(limit);
+    const diff = end - now;
+
+    const minutes = Math.floor((diff / 1000) / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    return `${days}d ${hours % 24}h ${minutes % 60}m`;
+  };
+
   useEffect(() => {
     axios
-      .get(`${url}/lists`, {
+      .get(`https://railway.todo.techtrain.dev/lists`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -29,14 +40,14 @@ export const Home = () => {
       .catch((err) => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [cookies.token]);
 
   useEffect(() => {
     const listId = lists[0]?.id;
     if (typeof listId !== 'undefined') {
       setSelectListId(listId);
       axios
-        .get(`${url}/lists/${listId}/tasks`, {
+        .get(`https://railway.todo.techtrain.dev/lists/${listId}/tasks`, {
           headers: {
             authorization: `Bearer ${cookies.token}`,
           },
@@ -48,12 +59,12 @@ export const Home = () => {
           setErrorMessage(`タスクの取得に失敗しました。${err}`);
         });
     }
-  }, [lists]);
+  }, [lists, cookies.token]);
 
   const handleSelectList = (id) => {
     setSelectListId(id);
     axios
-      .get(`${url}/lists/${id}/tasks`, {
+      .get(`https://railway.todo.techtrain.dev/lists/${id}/tasks`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -65,6 +76,7 @@ export const Home = () => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
   };
+
   return (
     <div>
       <Header />
@@ -107,7 +119,7 @@ export const Home = () => {
                 <option value="done">完了</option>
               </select>
             </div>
-            <Tasks tasks={tasks} selectListId={selectListId} isDoneDisplay={isDoneDisplay} />
+            <Tasks tasks={tasks} selectListId={selectListId} isDoneDisplay={isDoneDisplay} calculate={calculate} />
           </div>
         </div>
       </main>
@@ -117,34 +129,14 @@ export const Home = () => {
 
 // 表示するタスク
 const Tasks = (props) => {
-  const { tasks, selectListId, isDoneDisplay } = props;
-  if (tasks === null) return <></>;
-
-  if (isDoneDisplay == 'done') {
-    return (
-      <ul>
-        {tasks
-          .filter((task) => {
-            return task.done === true;
-          })
-          .map((task, key) => (
-            <li key={key} className="task-item">
-              <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-                {task.title}
-                <br />
-                {task.done ? '完了' : '未完了'}
-              </Link>
-            </li>
-          ))}
-      </ul>
-    );
-  }
+  const { tasks, selectListId, isDoneDisplay, calculate } = props;
+  if (!tasks) return <></>;
 
   return (
     <ul>
       {tasks
         .filter((task) => {
-          return task.done === false;
+          return isDoneDisplay === 'done' ? task.done : !task.done;
         })
         .map((task, key) => (
           <li key={key} className="task-item">
@@ -152,6 +144,10 @@ const Tasks = (props) => {
               {task.title}
               <br />
               {task.done ? '完了' : '未完了'}
+              <br />
+              {task.limit}
+              <br />
+              {calculate(task.limit)}
             </Link>
           </li>
         ))}
@@ -159,26 +155,16 @@ const Tasks = (props) => {
   );
 };
 
-Home.propTypes = {
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      done: PropTypes.bool.isRequired,
-    })
-  ).isRequired,
-  selectListId: PropTypes.number.isRequired,
-  isDoneDisplay: PropTypes.string.isRequired,
-};
-
 Tasks.propTypes = {
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      done: PropTypes.bool.isRequired,
+      id: PropTypes.number,
+      title: PropTypes.string,
+      done: PropTypes.bool,
+      limit: PropTypes.string,
     })
-  ).isRequired,
-  selectListId: PropTypes.number.isRequired,
-  isDoneDisplay: PropTypes.string.isRequired,
+  ),
+  selectListId: PropTypes.number,
+  isDoneDisplay: PropTypes.string,
+  calculate: PropTypes.func.isRequired,
 };

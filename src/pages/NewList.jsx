@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { url } from '../const';
 import './newList.scss';
 
 export const NewList = () => {
@@ -18,7 +17,7 @@ export const NewList = () => {
     };
 
     axios
-      .post(`${url}/lists`, data, {
+      .post(`https://railway.todo.techtrain.dev//lists`, data, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },

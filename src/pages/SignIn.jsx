@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { signIn } from '../authSlice';
 import { Header } from '../components/Header';
-import { url } from '../const';
 import './signin.scss';
 
 export const SignIn = () => {
@@ -20,7 +19,7 @@ export const SignIn = () => {
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const onSignIn = () => {
     axios
-      .post(`${url}/signin`, { email: email, password: password })
+      .post(`https://railway.todo.techtrain.dev//signin`, { email: email, password: password })
       .then((res) => {
         setCookie('token', res.data.token);
         dispatch(signIn());
