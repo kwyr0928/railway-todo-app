@@ -3,10 +3,7 @@ module.exports = {
     browser: true,
     es2022: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'prettier',
-  ],
+  extends: ['plugin:react/recommended', 'prettier'],
   overrides: [
     {
       env: {
@@ -16,7 +13,7 @@ module.exports = {
       parserOptions: {
         sourceType: 'script',
         parser: '@typescript-eslint/parser',
-        "ecmaVersion": 13
+        ecmaVersion: 13,
       },
     },
   ],

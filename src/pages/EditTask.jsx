@@ -24,7 +24,7 @@ export const EditTask = () => {
       title: title,
       detail: detail,
       done: isDone,
-      limit: limit
+      limit: limit,
     };
 
     axios

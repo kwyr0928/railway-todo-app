@@ -23,7 +23,7 @@ export const NewTask = () => {
       title: title,
       detail: detail,
       done: false,
-      limit: limit
+      limit: limit,
     };
 
     axios

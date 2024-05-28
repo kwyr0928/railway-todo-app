@@ -20,7 +20,7 @@ export const Home = () => {
     const end = new Date(limit);
     const diff = end - now;
 
-    const minutes = Math.floor((diff / 1000) / 60);
+    const minutes = Math.floor(diff / 1000 / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
@@ -162,7 +162,7 @@ Tasks.propTypes = {
       title: PropTypes.string,
       done: PropTypes.bool,
       limit: PropTypes.string,
-    })
+    }),
   ),
   selectListId: PropTypes.number,
   isDoneDisplay: PropTypes.string,
